@@ -1,4 +1,4 @@
-import 'package:fitness_app/config/routes/router.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:fitness_app/config/theme/light_theme.dart';
 import 'package:fitness_app/features/original/di/injection_container.dart';
 import 'package:fitness_app/features/original/presentation/pages/nav/app_page.dart';
@@ -6,9 +6,8 @@ import 'package:flutter/material.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
-
+  await Firebase.initializeApp();
   await initializeDependencies();
-
   runApp(const MyApp());
 }
 

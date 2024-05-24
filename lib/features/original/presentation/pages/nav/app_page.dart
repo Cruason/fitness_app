@@ -4,14 +4,17 @@ import 'package:fitness_app/features/original/presentation/bloc/details/details_
 import 'package:fitness_app/features/original/presentation/bloc/details/details_event.dart';
 import 'package:fitness_app/features/original/presentation/bloc/edit_plan/edit_plan_bloc.dart';
 import 'package:fitness_app/features/original/presentation/bloc/edit_plan/edit_plan_event.dart';
+import 'package:fitness_app/features/original/presentation/bloc/news/newsBloc.dart';
 import 'package:fitness_app/features/original/presentation/bloc/plan_list//fitness_plan_bloc.dart';
 import 'package:fitness_app/features/original/presentation/bloc/plan_list//fitness_plan_event.dart';
 import 'package:fitness_app/features/original/presentation/bloc/update_plan/update_bloc.dart';
+import 'package:fitness_app/features/original/presentation/pages/auth/login_page.dart';
 import 'package:fitness_app/features/original/presentation/pages/detail/plan_detail_page.dart';
 import 'package:fitness_app/features/original/presentation/pages/plan_list/plan_list.dart';
 import 'package:fitness_app/features/original/presentation/widgets/nav/bottom_nav.dart';
 import 'package:flutter/material.dart';
 
+import '../news/newsPage.dart';
 
 class AppPage extends StatefulWidget {
   AppPage({super.key});
@@ -22,6 +25,8 @@ class AppPage extends StatefulWidget {
   final EditPlanBloc editPlanBlocAddPage = di()
     ..add(const EditEmptyPlanEvent());
   final UpdatePlanBloc updatePlanBloc = di();
+  final NewsBloc newsBloc = di();
+
   final String route = Pages.homePage.route;
 
   @override
@@ -50,7 +55,9 @@ class _AppPageState extends State<AppPage> {
         centerTitle: true,
       ),
       body: (route == Pages.homePage.route)
-          ? SizedBox()
+          ? NewsPage(
+              newsBloc: widget.newsBloc,
+            )
           : (route == Pages.planListPage.route)
               ? PlanListPage(
                   goDetailsPage: (fitnessPlanEntity) {
@@ -64,7 +71,8 @@ class _AppPageState extends State<AppPage> {
                   deleteFromDetails: (fitnessPlanEntity) {
                     widget.detailsBloc
                         .add(GetPlanDetailsEvent(id: fitnessPlanEntity.id!));
-                  },)
+                  },
+                )
               : (route == Pages.detailPlanPage.route)
                   ? PlanDetailPage(
                       goToPlanList: () {
@@ -79,7 +87,7 @@ class _AppPageState extends State<AppPage> {
                       },
                     )
                   : (route == Pages.profilePage.route)
-                      ? SizedBox()
+                      ? AuthPage()
                       : SizedBox(),
       bottomNavigationBar: CustomBottomNavigation(
         route: route,
